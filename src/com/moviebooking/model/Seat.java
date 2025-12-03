@@ -1,9 +1,6 @@
 package com.moviebooking.model;
 
-/**
- * Represents a specific seat in the cinema.
- * Implements the Bookable interface to handle booking logic.
- */
+
 public class Seat implements Bookable {
 
     // Encapsulation: Private attributes
@@ -11,11 +8,7 @@ public class Seat implements Bookable {
     private int number;     // e.g., 1, 2
     private boolean isBooked;
 
-    /**
-     * Constructor to initialize the seat.
-     * @param row The row letter.
-     * @param number The seat number.
-     */
+  
     public Seat(char row, int number) {
         this.row = row;
         this.number = number;
