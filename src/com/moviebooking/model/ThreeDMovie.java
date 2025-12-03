@@ -1,9 +1,6 @@
 package com.moviebooking.model;
 
-/**
- * Represents a 3D movie.
- * Implements Inheritance (extends Movie) as required in Step 3.
- */
+
 public class ThreeDMovie extends Movie {
 
     // Encapsulation: Private field
