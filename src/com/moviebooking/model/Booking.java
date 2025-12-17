@@ -24,7 +24,10 @@ public class Booking {
     private double calculateTotal() {
         return showTime.getMovie().calculatePrice();
     }
-
+    /**
+     * Confirms the booking, marks the seat as taken,
+     * and prints the ticket details to the console.
+     */
     public void confirmBooking() {
         seat.book();
         System.out.println("Booking confirmed for " + customer.getName());
