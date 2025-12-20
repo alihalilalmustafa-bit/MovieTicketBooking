@@ -16,5 +16,6 @@ This project demonstrates OOP principles like **Inheritance**, **Polymorphism**,
 3. Check the console for the booking demo.
 
 ## Author
-**Name:** [ALi AL MUSTAFA]
+**Name:** [Ali Al Mustafa]
 **ID:** [220303971]
+- **Student Discount:** 10% discount applied automatically for students.
