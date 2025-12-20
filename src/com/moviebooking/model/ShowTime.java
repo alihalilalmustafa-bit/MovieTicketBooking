@@ -4,7 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Represents a specific screening of a movie at a specific time.
+ * This class manages the relationship between a movie and its seats.
+ */
 public class ShowTime {
 
     // Encapsulation: Private attributes
@@ -13,10 +16,11 @@ public class ShowTime {
     private List<Seat> seats;
 
     /**
-     * Constructor
-     * @param movie The movie being shown.
+     * Constructs a new ShowTime.
+     *
+     * @param movie       The movie being shown.
      * @param sessionTime The date and time of the show.
-     * @param totalRows Number of rows in the theater.
+     * @param totalRows   Number of rows in the theater.
      * @param seatsPerRow Number of seats per row.
      */
     public ShowTime(Movie movie, LocalDateTime sessionTime, int totalRows, int seatsPerRow) {
@@ -26,7 +30,13 @@ public class ShowTime {
         generateSeats(totalRows, seatsPerRow);
     }
 
-
+    /**
+     * Helper method to generate the seat grid (e.g., A1, A2, B1...).
+     * Populates the list of seats based on rows and columns.
+     *
+     * @param rows        Number of rows.
+     * @param seatsPerRow Number of seats in each row.
+     */
     private void generateSeats(int rows, int seatsPerRow) {
         for (int i = 0; i < rows; i++) {
             char rowChar = (char) ('A' + i); // Converts 0 to 'A', 1 to 'B', etc.
@@ -36,7 +46,7 @@ public class ShowTime {
         }
     }
 
-    // Getters
+    // Getters for accessing private fields
     public Movie getMovie() {
         return movie;
     }
