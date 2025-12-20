@@ -2,7 +2,6 @@ package com.moviebooking.model;
 
 /**
  * Represents a final booking transaction.
- * Links Customer, ShowTime, and Seat together.
  */
 public class Booking {
 
@@ -18,26 +17,24 @@ public class Booking {
         this.totalPrice = calculateTotal();
     }
 
-    /**
-     * Calculates the price based on movie type (Polymorphism).
-     */
     private double calculateTotal() {
-        return showTime.getMovie().calculatePrice();
-    }
-    /**
-     * Confirms the booking, marks the seat as taken,
-     * and prints the ticket details to the console.
-     */
-    public void confirmBooking() {
-        seat.book();
-        System.out.println("Booking confirmed for " + customer.getName());
-        System.out.println("Movie: " + showTime.getMovie().getTitle());
-        System.out.println("Seat: " + seat.getSeatId());
-        System.out.println("Price: $" + totalPrice);
+        double price = showTime.getMovie().calculatePrice();
+
+        // Feature: Student Discount (10% OFF)
+        // If the customer is a student, multiply price by 0.90
+        if (customer.isStudent()) {
+            price = price * 0.90;
+            System.out.println("(Student Discount Applied: 10%)");
+        }
+        return price;
     }
 
-    // Getters
-    public double getTotalPrice() {
-        return totalPrice;
+    public void confirmBooking() {
+        seat.book();
+        System.out.println("Booking Confirmed!");
+        System.out.println("User: " + customer.getName());
+        System.out.println("Movie: " + showTime.getMovie().getTitle());
+        System.out.println("Seat: " + seat.getSeatId());
+        System.out.println("Total Price: $" + totalPrice);
     }
 }
