@@ -19,8 +19,6 @@ public class Booking {
 
     private double calculateTotal() {
         double price = showTime.getMovie().calculatePrice();
-
-        // Feature: Student Discount (10% OFF)
         if (customer.isStudent()) {
             price = price * 0.90;
             System.out.println("(Student Discount Applied: 10%)");
@@ -28,24 +26,17 @@ public class Booking {
         return price;
     }
 
-    /**
-     * Confirms the booking and prints the receipt.
-     */
     public void confirmBooking() {
         seat.book();
-        printReceipt(); // استدعاء دالة الطباعة الجديدة
+        printReceipt(); // Cleaner code
     }
 
-    /**
-     * Helper method to print ticket details cleanly.
-     */
     private void printReceipt() {
         System.out.println("\n--- TICKET RECEIPT ---");
-        System.out.println("Status: Booking Confirmed!");
-        System.out.println("User:   " + customer.getName());
-        System.out.println("Movie:  " + showTime.getMovie().getTitle());
-        System.out.println("Seat:   " + seat.getSeatId());
-        System.out.println("Price:  $" + totalPrice);
+        System.out.println("Customer: " + customer.getName());
+        System.out.println("Movie:    " + showTime.getMovie().getTitle());
+        System.out.println("Seat:     " + seat.getSeatId());
+        System.out.println("Paid:     $" + totalPrice);
         System.out.println("----------------------\n");
     }
 }
