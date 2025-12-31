@@ -21,22 +21,18 @@ public class Booking {
         double price = showTime.getMovie().calculatePrice();
         if (customer.isStudent()) {
             price = price * 0.90;
-            System.out.println("(Student Discount Applied: 10%)");
         }
         return price;
     }
 
     public void confirmBooking() {
         seat.book();
-        printReceipt(); // Cleaner code
+        // We will print the receipt via Main or DataManager now
     }
 
-    private void printReceipt() {
-        System.out.println("\n--- TICKET RECEIPT ---");
-        System.out.println("Customer: " + customer.getName());
-        System.out.println("Movie:    " + showTime.getMovie().getTitle());
-        System.out.println("Seat:     " + seat.getSeatId());
-        System.out.println("Paid:     $" + totalPrice);
-        System.out.println("----------------------\n");
-    }
+    // Getters needed for CSV saving
+    public Customer getCustomer() { return customer; }
+    public ShowTime getShowTime() { return showTime; }
+    public Seat getSeat() { return seat; }
+    public double getTotalPrice() { return totalPrice; }
 }
