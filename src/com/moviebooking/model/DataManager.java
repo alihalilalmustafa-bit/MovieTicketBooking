@@ -1,48 +1,81 @@
 package com.moviebooking.model;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
+import java.time.LocalDateTime; // <--- ADDED THIS IMPORT
+import java.time.format.DateTimeFormatter;
 
-/**
- * Manages data persistence for the application.
- * Responsible for saving booking records to a CSV file.
- */
 public class DataManager {
 
-    // The name of the file where data will be stored
-    private static final String FILE_NAME = "booking_history.csv";
+    private static final String FILE_NAME = "bookings.csv";
 
-    /**
-     * Saves a single booking record to the CSV file.
-     * The file is opened in 'append' mode so previous data is not lost.
-     * * @param booking The booking object containing all details.
-     */
-    public static void saveBooking(Booking booking) {
-        // Try-with-resources ensures the file is closed automatically after writing
-        try (FileWriter fw = new FileWriter(FILE_NAME, true);
+    // --- METHOD 1: Save Normal Booking ---
+    public static void saveTransaction(Booking booking, double snackCost) {
+
+        File file = new File(FILE_NAME);
+
+        // Smart Check: Create header if file is missing or empty
+        boolean needsHeader = !file.exists() || file.length() == 0;
+
+        try (FileWriter fw = new FileWriter(file, true);
              PrintWriter pw = new PrintWriter(fw)) {
 
-            // 1. Extract Data from the Booking object
-            String userID = booking.getCustomer().getEmail(); // Unique ID (Email)
-            String userName = booking.getCustomer().getName();
-            String userType = booking.getCustomer().isStudent() ? "Student" : "Regular";
+            // 1. Write the Header Row
+            if (needsHeader) {
+                pw.println("Customer Name, Movie, Seat,  Date,     Ticket Price, Snack Cost, Total Paid");
+            }
+
+            // 2. Prepare Data
+            String customerName = booking.getCustomer().getName();
             String movieTitle = booking.getShowTime().getMovie().getTitle();
-            String seatNumber = booking.getSeat().getSeatId();
-            double pricePaid = booking.getTotalPrice();
-            String bookingDate = LocalDateTime.now().toString();
-            String status = "CONFIRMED";
+            String seatId = booking.getSeat().getSeatId();
 
-            // 2. Format as CSV (Comma Separated Values)
-            // Format: ID, Name, Type, Movie, Seat, Price, Status, Date
-            pw.printf("%s,%s,%s,%s,%s,%.2f,%s,%s%n",
-                    userID, userName, userType, movieTitle, seatNumber, pricePaid, status, bookingDate);
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String date = booking.getBookingDate().format(fmt);
 
-            System.out.println(">> [System]: Booking saved to " + FILE_NAME);
+            double ticketPrice = booking.getFinalPrice();
+            double total = ticketPrice + snackCost;
+
+            // 3. Write Data
+            pw.printf("%s, %s, %s, %s, $%.2f, $%.2f, $%.2f%n",
+                    customerName, movieTitle, seatId, date, ticketPrice, snackCost, total);
 
         } catch (IOException e) {
-            System.err.println("Error saving data to file: " + e.getMessage());
+            System.out.println("Error saving data: " + e.getMessage());
+        }
+    }
+
+    // --- METHOD 2: Save Refund (NEW) ---
+    public static void saveRefund(Booking booking, double snackRefund) {
+
+        File file = new File(FILE_NAME);
+
+        try (FileWriter fw = new FileWriter(file, true);
+             PrintWriter pw = new PrintWriter(fw)) {
+
+            // Prepare Data for the log
+            String customerName = booking.getCustomer().getName();
+            String movieTitle = booking.getShowTime().getMovie().getTitle();
+            String seatId = booking.getSeat().getSeatId();
+
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            String date = LocalDateTime.now().format(fmt); // Refund time is NOW
+
+            // CALCULATE NEGATIVE VALUES
+            double ticketRefund = -booking.getFinalPrice();
+            double snackRef = -snackRefund;
+            double totalRefund = ticketRefund + snackRef;
+
+            // Write Refund Row: Adds "(REFUND)" to name and uses negative numbers
+            pw.printf("%s (REFUND), %s, %s, %s, $%.2f, $%.2f, $%.2f%n",
+                    customerName, movieTitle, seatId, date, ticketRefund, snackRef, totalRefund);
+
+            System.out.println("    [Refund Logged] " + totalRefund);
+
+        } catch (IOException e) {
+            System.out.println("Error saving refund: " + e.getMessage());
         }
     }
 }

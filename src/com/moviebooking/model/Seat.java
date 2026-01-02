@@ -1,37 +1,40 @@
 package com.moviebooking.model;
 
-
 public class Seat implements Bookable {
 
-    // Encapsulation: Private attributes
-    private char row;       // e.g., 'A', 'B'
-    private int number;     // e.g., 1, 2
+    private char row;
+    private int number;
     private boolean isBooked;
 
-  
     public Seat(char row, int number) {
         this.row = row;
         this.number = number;
-        this.isBooked = false; // By default, seat is free
+        this.isBooked = false;
     }
 
-    // Implementing abstract methods from Bookable Interface
+    // Required for your Booking logic
+    public void setAvailable(boolean available) {
+        this.isBooked = !available;
+    }
+
     @Override
     public boolean isAvailable() {
         return !isBooked;
     }
 
+    // --- FIX IS HERE: Change 'void' to 'boolean' ---
     @Override
-    public void book() {
+    public boolean book() {
         if (isAvailable()) {
             isBooked = true;
             System.out.println("Seat " + row + number + " booked successfully.");
+            return true; // Return true because booking succeeded
         } else {
             System.out.println("Seat " + row + number + " is already booked.");
+            return false; // Return false because booking failed
         }
     }
 
-    // Getter for seat ID (e.g., "A1")
     public String getSeatId() {
         return "" + row + number;
     }

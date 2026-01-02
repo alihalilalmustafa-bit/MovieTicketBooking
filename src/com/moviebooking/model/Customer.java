@@ -1,22 +1,20 @@
 package com.moviebooking.model;
 
-/**
- * Represents a customer booking a ticket.
- * Updated to include student status for discounts.
- */
 public class Customer {
-
     private String name;
     private String email;
-    private boolean isStudent; // New field added for Week 3 feature
+    private boolean isVip;
+    private boolean hasOutsideFood; // <--- NEW FIELD
 
-    public Customer(String name, String email, boolean isStudent) {
+    public Customer(String name, String email, boolean isVip, boolean hasOutsideFood) {
         this.name = name;
         this.email = email;
-        this.isStudent = isStudent;
+        this.isVip = isVip;
+        this.hasOutsideFood = hasOutsideFood;
     }
 
     public String getName() { return name; }
     public String getEmail() { return email; }
-    public boolean isStudent() { return isStudent; }
+    public boolean isVip() { return isVip; }
+    public boolean hasOutsideFood() { return hasOutsideFood; } // Getter
 }
