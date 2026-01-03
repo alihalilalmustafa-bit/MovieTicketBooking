@@ -4,7 +4,7 @@ public class Customer {
     private String name;
     private String email;
     private boolean isVip;
-    private boolean hasOutsideFood; // <--- NEW FIELD
+    private boolean hasOutsideFood;
 
     public Customer(String name, String email, boolean isVip, boolean hasOutsideFood) {
         this.name = name;

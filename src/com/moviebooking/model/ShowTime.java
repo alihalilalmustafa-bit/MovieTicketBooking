@@ -38,14 +38,14 @@ public class ShowTime {
     public LocalDateTime getSessionTime() { return sessionTime; }
     public List<Seat> getSeats() { return seats; }
 
-    // --- UPDATED METHOD: WEST SCREEN LAYOUT ---
+
     public void printSeatMap() {
         //System.out.println("\n      [ FRONT ]                            [ BACK ]");
         System.out.println("====================================================");
 
         char currentRow = ' ';
 
-        // We need to track the row count to know when to print the word "SCREEN"
+
         int rowCounter = 0;
 
         for (int i = 0; i < seats.size(); i++) {

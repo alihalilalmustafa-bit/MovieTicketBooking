@@ -22,15 +22,14 @@ public class ConcessionStand {
         }
     }
 
-    // --- UPDATED METHOD ---
-    // Changed void to double so we can track how much money was spent
+
     public double sellFood(Customer customer, int choiceIndex) {
         if (choiceIndex >= 0 && choiceIndex < menu.size()) {
             FoodItem item = menu.get(choiceIndex);
             System.out.println( customer.getName() + " bought " + item.getName() + " for $" + item.getPrice());
-            return item.getPrice(); // Returns the price to Main
+            return item.getPrice();
         }
-        return 0.0; // Returns 0 if invalid choice
+        return 0.0;
     }
 
     public int getMenuSize() { return menu.size(); }

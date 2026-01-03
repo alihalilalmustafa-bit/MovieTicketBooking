@@ -24,28 +24,28 @@ public class Main {
 
             System.out.println("\n " + name + "  (Wants " + preference + ") ");
 
-            // --- SECURITY ---
+
             if (cust.hasOutsideFood()) {
-                System.out.println("👮 SECURITY: Please discard outside food.");
+                System.out.println(" SECURITY: Please discard outside food.");
             } else {
                 System.out.println(" SECURITY: Welcome.");
             }
 
-            // --- FIND SEAT ---
+
             int chosenIndex = findBestSeatForPreference(show1, preference);
 
-            // (Fallback logic)
+
             if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "MIDDLE");
             if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "BACK");
             if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "FRONT");
 
-            // --- BOOKING & SNACKS ---
+
             if (chosenIndex != -1) {
-                // 1. Process Booking (Create object, but don't save to CSV yet)
+
                 Booking currentBooking = processBooking(cust, show1, chosenIndex);
                 System.out.println(" SUCCESS: Seat " + show1.getSeats().get(chosenIndex).getSeatId() + " booked.");
 
-                // 2. Buy Snacks
+
                 double snackPrice = 0.0;
                 int chanceToBuy = cust.hasOutsideFood() ? 90 : 50;
 
@@ -53,17 +53,16 @@ public class Main {
                     System.out.println("🍿 SNACKS: Going to shop...");
                     int foodChoice = random.nextInt(shop.getMenuSize());
 
-                    // THIS NOW RETURNS THE PRICE
+
                     snackPrice = shop.sellFood(cust, foodChoice);
                 }
 
-                // 3. Save EVERYTHING (Ticket + Snacks)
+
                 DataManager.saveTransaction(currentBooking, snackPrice);
-                // --- PHASE 5: RANDOM CANCELLATION ---
-                // 15% chance the customer cancels immediately
+
                 if (random.nextInt(100) < 15) {
 
-                    // 1. Pick a random excuse
+
                     String[] excuses = {
                             "My cat is sick 😿",
                             "Traffic is terrible 🚗",
@@ -76,7 +75,7 @@ public class Main {
                     System.out.println("\n📞 RINNNG! " + name + " is calling to cancel...");
                     System.out.println("   (Reason: '" + randomReason + "')");
 
-                    // 2. Cancel and Refund
+
                     currentBooking.cancel();
                     DataManager.saveRefund(currentBooking, snackPrice);
                 }
@@ -84,16 +83,15 @@ public class Main {
             } else {
                 System.out.println("⛔ FAIL: Theater Full.");
             }
-        } // <--- End of Customer Loop
+        }
 
-        // --- NEW ADDITION: SHOW THE SCREEN AND MAP ---
+
         System.out.println("\n\n=================================");
         System.out.println("      🎥  SCREEN THIS WAY  🎥      ");
         System.out.println("=================================");
         show1.printSeatMap();
 
 
-        // --- PHASE 7: FINANCIAL SUMMARY ---
         System.out.println("\n--- 💰 DAILY FINANCIAL REPORT 💰 ---");
         // Note: In a real app, you would calculate these variables inside the loop
         // But for now, we can just look at the CSV file or just end the simulation.
@@ -101,7 +99,7 @@ public class Main {
         System.out.println("Status: System Shutting Down...");
     }
 
-    // --- HELPERS ---
+
 
     public static Booking processBooking(Customer customer, ShowTime show, int seatIndex) {
         Seat seat = show.getSeats().get(seatIndex);
@@ -113,33 +111,33 @@ public class Main {
         return null;
     }
 
-    // --- UPDATED HELPER: Strict Column Logic (1=Front, 6=Back) ---
+
     public static int findBestSeatForPreference(ShowTime show, String preference) {
         List<Seat> seats = show.getSeats();
 
         for (int i = 0; i < seats.size(); i++) {
             Seat seat = seats.get(i);
 
-            // Skip if taken
+
             if (!seat.isAvailable()) continue;
 
-            // Get the Column Number (e.g., "A6" -> 6)
+
             int col = Integer.parseInt(seat.getSeatId().substring(1));
 
-            // STRICT MATCHING
+
             if (preference.equals("FRONT")) {
-                // Only Column 1 is Front
+
                 if (col == 1) return i;
             }
             else if (preference.equals("BACK")) {
-                // Only Column 6 is Back (VIP)
+
                 if (col == 6) return i;
             }
             else if (preference.equals("MIDDLE")) {
-                // Columns 2, 3, 4, 5 are Middle
+
                 if (col >= 2 && col <= 5) return i;
             }
         }
-        return -1; // Specific section is full
+        return -1;
     }
 }

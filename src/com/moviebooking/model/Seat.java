@@ -12,7 +12,7 @@ public class Seat implements Bookable {
         this.isBooked = false;
     }
 
-    // Required for your Booking logic
+
     public void setAvailable(boolean available) {
         this.isBooked = !available;
     }
@@ -22,7 +22,7 @@ public class Seat implements Bookable {
         return !isBooked;
     }
 
-    // --- FIX IS HERE: Change 'void' to 'boolean' ---
+
     @Override
     public boolean book() {
         if (isAvailable()) {
@@ -31,8 +31,8 @@ public class Seat implements Bookable {
             return true; // Return true because booking succeeded
         } else {
             System.out.println("Seat " + row + number + " is already booked.");
-            return false; // Return false because booking failed
-        }
+            return false;
+    }
     }
 
     public String getSeatId() {
