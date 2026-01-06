@@ -7,7 +7,7 @@ public class ThreeDMovie extends Movie {
     private double glassesPrice;
 
     public ThreeDMovie(String title, int durationMinutes, double basePrice, double glassesPrice) {
-        super(title, durationMinutes, basePrice); // Inheritance call
+        super(title, durationMinutes, basePrice);
         this.glassesPrice = glassesPrice;
     }
 
@@ -21,3 +21,4 @@ public class ThreeDMovie extends Movie {
         return glassesPrice;
     }
 }
+

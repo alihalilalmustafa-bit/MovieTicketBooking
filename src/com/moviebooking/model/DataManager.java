@@ -19,7 +19,7 @@ public class DataManager {
 
         boolean needsHeader = !file.exists() || file.length() == 0;
 
-        try (FileWriter fw = new FileWriter(file, true);
+        try (FileWriter fw = new FileWriter(file,true);
              PrintWriter pw = new PrintWriter(fw)) {
 
 

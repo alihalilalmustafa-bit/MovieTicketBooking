@@ -11,7 +11,7 @@ public class TwoDMovie extends Movie {
 
     @Override
     public double calculatePrice() {
-        // No extra fees for 2D movies
+
         return getBasePrice();
     }
 }

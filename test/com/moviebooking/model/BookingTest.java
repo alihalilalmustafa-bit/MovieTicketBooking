@@ -32,7 +32,7 @@ class BookingTest {
         ShowTime show = new ShowTime(movie, LocalDateTime.now(), 5, 6);
         Customer cust = new Customer("TestUser", "test@test.com", false, false);
 
-        // Pick Seat "A6" (The number is 6, which is >= 5)
+
         Seat vipSeat = show.getSeats().get(5);
 
 

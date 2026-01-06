@@ -12,6 +12,7 @@ public class Main {
         Movie avatar = new ThreeDMovie("Avatar 2", 190, 15.0, 5.0);
         ShowTime show1 = new ShowTime(avatar, LocalDateTime.now(), 5, 6);
         ConcessionStand shop = new ConcessionStand();
+        shop.initializeDefaultMenu();
 
         int numberOfCustomers = 15;
         Random random = new Random();
@@ -64,11 +65,11 @@ public class Main {
 
 
                     String[] excuses = {
-                            "My cat is sick 😿",
-                            "Traffic is terrible 🚗",
-                            "I forgot I have a date 💔",
-                            "I'm not feeling well 🤢",
-                            "My boss called me into work 💼"
+                            "My cat is sick ",
+                            "Traffic is terrible ",
+                            "I forgot I have a date ",
+                            "I'm not feeling well ",
+                            "My boss called me into work "
                     };
                     String randomReason = excuses[random.nextInt(excuses.length)];
 
@@ -92,11 +93,10 @@ public class Main {
         show1.printSeatMap();
 
 
-        System.out.println("\n--- 💰 DAILY FINANCIAL REPORT 💰 ---");
-        // Note: In a real app, you would calculate these variables inside the loop
-        // But for now, we can just look at the CSV file or just end the simulation.
+        System.out.println("\n DAILY FINANCIAL REPORT ");
+
         System.out.println("Transactions saved to: bookings.csv");
-        System.out.println("Status: System Shutting Down...");
+        System.out.println("Status: System Shutting Down.");
     }
 
 

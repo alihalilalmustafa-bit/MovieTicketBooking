@@ -40,7 +40,6 @@ public class ShowTime {
 
 
     public void printSeatMap() {
-        //System.out.println("\n      [ FRONT ]                            [ BACK ]");
         System.out.println("====================================================");
 
         char currentRow = ' ';
@@ -52,12 +51,11 @@ public class ShowTime {
             Seat seat = seats.get(i);
             char rowOfSeat = seat.getSeatId().charAt(0);
 
-            // 1. START OF A NEW ROW
-            if (rowOfSeat != currentRow) {
-                if (currentRow != ' ') System.out.println(); // Finish previous line
 
-                // Print the Screen sidebar
-                // We print "SCREEN" on the middle row (Row 'C' which is index 2)
+            if (rowOfSeat != currentRow) {
+                if (currentRow != ' ') System.out.println();
+
+
                 if (rowCounter == 2) {
                     System.out.print("SCREEN | ");
                 } else {
@@ -68,8 +66,7 @@ public class ShowTime {
                 rowCounter++;
             }
 
-            // 2. PRINT THE SEAT
-            // If taken, print [ XX ] to make it look cleaner
+
             if (seat.isAvailable()) {
                 System.out.print("[" + seat.getSeatId() + "] ");
             } else {

@@ -28,7 +28,7 @@ public class Seat implements Bookable {
         if (isAvailable()) {
             isBooked = true;
             System.out.println("Seat " + row + number + " booked successfully.");
-            return true; // Return true because booking succeeded
+            return true;
         } else {
             System.out.println("Seat " + row + number + " is already booked.");
             return false;

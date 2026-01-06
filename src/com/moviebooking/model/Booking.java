@@ -7,7 +7,7 @@ public class Booking {
     private ShowTime showTime;
     private Seat seat;
     private LocalDateTime bookingDate;
-    private double finalPrice; // <--- NEW FIELD
+    private double finalPrice;
 
     public Booking(Customer customer, ShowTime showTime, Seat seat) {
         this.customer = customer;
