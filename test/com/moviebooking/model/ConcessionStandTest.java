@@ -8,7 +8,6 @@ class ConcessionStandTest {
 
     @Test
     void testAddSnack() {
-        // Method 1: Test adding a single item
         ConcessionStand stand = new ConcessionStand();
         FoodItem popcorn = new FoodItem("Popcorn", 5.00);
 

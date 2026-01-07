@@ -27,7 +27,6 @@ class BookingTest {
 
     @Test
     void testVipBackRowFee() {
-        // 1. Setup: Use TwoDMovie instead of Movie
         TwoDMovie movie = new TwoDMovie("Regular Movie", 100, 20.0);
         ShowTime show = new ShowTime(movie, LocalDateTime.now(), 5, 6);
         Customer cust = new Customer("TestUser", "test@test.com", false, false);

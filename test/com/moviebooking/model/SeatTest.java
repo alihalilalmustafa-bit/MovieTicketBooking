@@ -7,14 +7,12 @@ class SeatTest {
 
     @Test
     void testSeatStartsAvailable() {
-        // Method 1: Check if a new seat is free by default
         Seat seat = new Seat('A', 1);
         assertTrue(seat.isAvailable(), "New seat should be available");
     }
 
     @Test
     void testBookingSuccess() {
-        // Method 2: Test the book() method when seat is free
         Seat seat = new Seat('A', 1);
         boolean result = seat.book();
 
