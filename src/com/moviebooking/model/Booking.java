@@ -60,7 +60,7 @@ public class Booking {
     public void cancel() {
 
         seat.setAvailable(true);
-        System.out.println("❌ CANCELLATION PROCESSED: Seat " + seat.getSeatId() + " is now free.");
+        System.out.println(" CANCELLATION PROCESSED: Seat " + seat.getSeatId() + " is now free.");
     }
 
 

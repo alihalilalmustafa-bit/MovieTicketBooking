@@ -1,143 +1,106 @@
 package com.moviebooking.model;
 
 import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== CINEMA SIMULATION (With Clean Data) ===\n");
-
         Movie avatar = new ThreeDMovie("Avatar 2", 190, 15.0, 5.0);
         ShowTime show1 = new ShowTime(avatar, LocalDateTime.now(), 5, 6);
         ConcessionStand shop = new ConcessionStand();
-        shop.initializeDefaultMenu();
 
-        int numberOfCustomers = 15;
-        Random random = new Random();
-        String[] possiblePreferences = {"MIDDLE", "MIDDLE", "BACK", "BACK", "FRONT"};
+        Scanner scanner = new Scanner(System.in);
+        boolean appRunning = true;
 
-        for (int i = 1; i <= numberOfCustomers; i++) {
-            String name = "Customer " + i;
-            Customer cust = new Customer(name, "email" + i + "@test.com", false, random.nextBoolean());
-            String preference = possiblePreferences[random.nextInt(possiblePreferences.length)];
-
-            System.out.println("\n " + name + "  (Wants " + preference + ") ");
+        System.out.println("=== 🎬 MOVIE TICKET SYSTEM (INTERACTIVE) 🎬 ===");
 
 
-            if (cust.hasOutsideFood()) {
-                System.out.println(" SECURITY: Please discard outside food.");
-            } else {
-                System.out.println(" SECURITY: Welcome.");
-            }
+        while (appRunning) {
+            System.out.println("\n--------------------------------");
+            System.out.println(" 1. View Seat  ");
+            System.out.println(" 2. Book a Ticket  ");
+            System.out.println(" 3. Exit ");
+            System.out.println("--------------------------------");
+            System.out.print(">> Choose an option: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    show1.printSeatMap();
+                    break;
+
+                case 2:
+
+                    System.out.print("Enter Name: ");
+                    String name = scanner.nextLine();
+
+                    System.out.print("Enter Email: ");
+                    String email = scanner.nextLine();
+
+                    System.out.print("Do you have outside food? (true/false): ");
+                    boolean hasOutsideFood = scanner.nextBoolean();
+                    scanner.nextLine();
+
+                    Customer cust = new Customer(name, email, false, hasOutsideFood);
 
 
-            int chosenIndex = findBestSeatForPreference(show1, preference);
+                    if (cust.hasOutsideFood()) {
+                        System.out.println(" SECURITY: Please throw away your outside food.");
+                    } else {
+                        System.out.println(" SECURITY: Welcome in.");
+                    }
 
-
-            if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "MIDDLE");
-            if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "BACK");
-            if (chosenIndex == -1) chosenIndex = findBestSeatForPreference(show1, "FRONT");
-
-
-            if (chosenIndex != -1) {
-
-                Booking currentBooking = processBooking(cust, show1, chosenIndex);
-                System.out.println(" SUCCESS: Seat " + show1.getSeats().get(chosenIndex).getSeatId() + " booked.");
-
-
-                double snackPrice = 0.0;
-                int chanceToBuy = cust.hasOutsideFood() ? 90 : 50;
-
-                if (random.nextInt(100) < chanceToBuy) {
-                    System.out.println("🍿 SNACKS: Going to shop...");
-                    int foodChoice = random.nextInt(shop.getMenuSize());
-
-
-                    snackPrice = shop.sellFood(cust, foodChoice);
-                }
-
-
-                DataManager.saveTransaction(currentBooking, snackPrice);
-
-                if (random.nextInt(100) < 15) {
-
-
-                    String[] excuses = {
-                            "My cat is sick ",
-                            "Traffic is terrible ",
-                            "I forgot I have a date ",
-                            "I'm not feeling well ",
-                            "My boss called me into work "
-                    };
-                    String randomReason = excuses[random.nextInt(excuses.length)];
-
-                    System.out.println("\n📞 RINNNG! " + name + " is calling to cancel...");
-                    System.out.println("   (Reason: '" + randomReason + "')");
-
-
-                    currentBooking.cancel();
-                    DataManager.saveRefund(currentBooking, snackPrice);
-                }
-
-            } else {
-                System.out.println("⛔ FAIL: Theater Full.");
-            }
-        }
-
-
-        System.out.println("\n\n=================================");
-        System.out.println("      🎥  SCREEN THIS WAY  🎥      ");
-        System.out.println("=================================");
-        show1.printSeatMap();
-
-
-        System.out.println("\n DAILY FINANCIAL REPORT ");
-
-        System.out.println("Transactions saved to: bookings.csv");
-        System.out.println("Status: System Shutting Down.");
-    }
+                    show1.printSeatMap();
+                    System.out.println("Enter Seat ID : ");
+                    String seatInput = scanner.nextLine().toUpperCase();
 
 
 
-    public static Booking processBooking(Customer customer, ShowTime show, int seatIndex) {
-        Seat seat = show.getSeats().get(seatIndex);
-        if (seat.isAvailable()) {
-            Booking booking = new Booking(customer, show, seat);
-            booking.confirmBooking();
-            return booking;
-        }
-        return null;
-    }
+                    Seat selectedSeat = null;
+                    for (Seat s : show1.getSeats()) {
+                        if (s.getSeatId().equals(seatInput)) {
+                            selectedSeat = s;
+                            break;
+                        }
+                    }
 
 
-    public static int findBestSeatForPreference(ShowTime show, String preference) {
-        List<Seat> seats = show.getSeats();
-
-        for (int i = 0; i < seats.size(); i++) {
-            Seat seat = seats.get(i);
+                    if (selectedSeat != null && selectedSeat.isAvailable()) {
+                        Booking newBooking = new Booking(cust, show1, selectedSeat);
+                        newBooking.confirmBooking();
 
 
-            if (!seat.isAvailable()) continue;
+                        System.out.println("\nDo you want snacks? (1: Yes, 2: No)");
+                        int snackChoice = scanner.nextInt();
+                        double snackCost = 0.0;
+
+                        if (snackChoice == 1) {
+                            shop.showMenu();
+                            System.out.print("Enter item number to buy: ");
+                            int itemIndex = scanner.nextInt() - 1;
+                            snackCost = shop.sellFood(cust, itemIndex);
+                        }
 
 
-            int col = Integer.parseInt(seat.getSeatId().substring(1));
+                        DataManager.saveTransaction(newBooking, snackCost);
+                        System.out.println(" Transaction saved to CSV.");
 
+                    } else {
+                        System.out.println("Sorry Seat  already taken");
+                    }
+                    break;
 
-            if (preference.equals("FRONT")) {
+                case 3:
+                    System.out.println("Goodbye");
+                    appRunning = false;
+                    break;
 
-                if (col == 1) return i;
-            }
-            else if (preference.equals("BACK")) {
-
-                if (col == 6) return i;
-            }
-            else if (preference.equals("MIDDLE")) {
-
-                if (col >= 2 && col <= 5) return i;
+                default:
+                    System.out.println("Invalid option, try again.");
             }
         }
-        return -1;
+        scanner.close();
     }
 }
